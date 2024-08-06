@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run client:build && npm run server",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start:dev": "concurrently \"npm run server:dev\" \"wait-on tcp:3001 && npm run client:dev\"",
     "server": "cd server && npm start",
     "server:dev": "cd server && npm run dev",
     "install": "cd server && npm i && cd ../client && npm i",
     "client:build": "cd client && npm run build",
     "client:dev": "cd client && npm run dev",
-    "build": "cd client && npm run build",
+    "build": "cd client && npm run build && cd .. && cd server && npm run build",
     "render-build": "npm install && npm run build"
   },
   "keywords": [],
@@ -20,6 +22,7 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.2",
+    "gh-pages": "^6.1.1",
     "nodemon": "^3.1.0",
     "wait-on": "^7.2.0"
   },
