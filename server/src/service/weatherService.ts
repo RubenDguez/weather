@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 import historyService from './historyService.js';
-dotenv.config();
+import { join } from 'path';
+dotenv.config({
+    path: join(process.cwd(), '../.env')
+});
 
 // TODO: Define an interface for the Coordinates object
 interface Coordinates {

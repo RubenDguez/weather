@@ -1,9 +1,12 @@
 import dotenv from 'dotenv';
 import express from 'express';
-dotenv.config();
+dotenv.config({
+    path: join(process.cwd(), '../.env')
+});
 
 // Import the routes
 import routes from './routes/index.js';
+import { join } from 'path';
 
 const app = express();
 
