@@ -12,14 +12,11 @@ const tempEl: HTMLParagraphElement = document.getElementById('temp') as HTMLPara
 const windEl: HTMLParagraphElement = document.getElementById('wind') as HTMLParagraphElement;
 const humidityEl: HTMLParagraphElement = document.getElementById('humidity') as HTMLParagraphElement;
 
-/*
-
-API Calls
-
-*/
+/* API Calls */
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const fetchWeather = async (cityName: string) => {
-	const response = await fetch('/api/weather/', {
+	const response = await fetch(BASE_URL + '/', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -35,20 +32,18 @@ const fetchWeather = async (cityName: string) => {
 };
 
 const fetchSearchHistory = async () => {
-	const history = await fetch('/api/weather/history', {
+	const history = await fetch(BASE_URL + '/history', {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
 		},
 	});
 
-	console.log('HISTORY', history);
-
 	return history;
 };
 
 const deleteCityFromHistory = async (id: string) => {
-	await fetch(`/api/weather/history/${id}`, {
+	await fetch(BASE_URL + `/history/${id}`, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type': 'application/json',
@@ -56,11 +51,7 @@ const deleteCityFromHistory = async (id: string) => {
 	});
 };
 
-/*
-
-Render Functions
-
-*/
+/* Render Functions */
 
 const renderCurrentWeather = (currentWeather: any): void => {
 	const { city, date, icon, iconDescription, tempF, windSpeed, humidity } = currentWeather;
@@ -135,11 +126,7 @@ const renderSearchHistory = async (searchHistory: any) => {
 	}
 };
 
-/*
-
-Helper Functions
-
-*/
+/* Helper Functions */
 
 const createForecastCard = () => {
 	const col = document.createElement('div');
@@ -207,11 +194,7 @@ const buildHistoryListItem = (city: any) => {
 	return historyDiv;
 };
 
-/*
-
-Event Handlers
-
-*/
+/* Event Handlers */
 
 const handleSearchFormSubmit = (event: any): void => {
 	event.preventDefault();
@@ -240,11 +223,7 @@ const handleDeleteHistoryClick = (event: any) => {
 	deleteCityFromHistory(cityID).then(getAndRenderHistory);
 };
 
-/*
-
-Initial Render
-
-*/
+/* Initial Render */
 
 const getAndRenderHistory = () => fetchSearchHistory().then(renderSearchHistory);
 
