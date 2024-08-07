@@ -1,4 +1,5 @@
 import { readFile, writeFile } from 'fs/promises';
+import * as uuid from 'uuid';
 
 // TODO: Define a City class with name and id properties
 class City {
@@ -6,7 +7,7 @@ class City {
   name: string;
 
   constructor(name: string) {
-    this.id = Date.now().toString();
+    this.id = uuid.v4();
     this.name = name;
   }
 }
