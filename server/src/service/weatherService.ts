@@ -80,6 +80,7 @@ class WeatherService {
 		const forecast: Array<Weather> = [];
 
 		for (const weather of weatherData) {
+			if (weather.dt_txt.split(' ')[0] === currentWeather.date) continue;
 			if (forecast.find((f) => f.date === weather.dt_txt.split(' ')[0])) continue;
 			forecast.push(new Weather(this.city, weather));
 
@@ -90,7 +91,7 @@ class WeatherService {
 	}
 
 	async getWeatherForCity(city: string) {
-		this.city = city.replace(' ', '');
+		this.city = city;
 		this.fetchAndDestructureLocationData();
 		const response = await this.fetchWeatherData(this.location);
 
