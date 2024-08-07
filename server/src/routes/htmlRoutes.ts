@@ -4,7 +4,6 @@ import path from 'path';
 const index = path.join(process.cwd(), '../client/dist/index.html')
 const router = Router();
 
-// TODO: Define route to serve index.html
 router.get('/', (_req, res) => {
   res.sendFile(index);
 });
