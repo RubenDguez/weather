@@ -1,1 +1,18 @@
-[]
+[
+    {
+        "id": "79f72fdd-1dcc-42d9-b984-769c4df33497",
+        "name": "Clermont, FL"
+    },
+    {
+        "id": "4cd3244f-9667-44d8-9cf3-9d61555ea5f8",
+        "name": "Orlando, FL"
+    },
+    {
+        "id": "aefbe57d-881a-41c7-8061-1292fe7d529e",
+        "name": "Miami, FL"
+    },
+    {
+        "id": "923a170a-98ab-4d3e-a215-679951e1fe39",
+        "name": "Kissimmee, FL"
+    }
+]
