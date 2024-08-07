@@ -6,7 +6,6 @@ const router = Router();
 
 // TODO: Define route to serve index.html
 router.get('/', (_req, res) => {
-  console.log(index)
   res.sendFile(index);
 });
 
