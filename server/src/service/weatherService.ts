@@ -143,18 +143,21 @@ class WeatherService {
 	/**
 	 * Build Forecast Array
 	 * @param {Array<any>} weatherData
+	 * @param {Weather} currentWeather
 	 * @return {Array<Weather>}
 	 */
-	private buildForecastArray(weatherData: Array<any>): Array<Weather> {
+	private buildForecastArray(weatherData: Array<any>, currentWeather: Weather): Array<Weather> {
 		const forecast: Array<Weather> = new Array();
 
 		for (const weather of weatherData) {
+			const weatherDate = weather.dt_txt.split(' ')[0];
+			if (weatherDate === currentWeather.date) continue;
 			if (forecast.find((f) => f.date === weather.dt_txt.split(' ')[0])) continue;
 
 			forecast.push(
 				new Weather(
 					this.CITY,
-					weather.dt_txt.split(' ')[0],
+					weatherDate,
 					weather.weather[0].icon,
 					weather.weather[0].iconDescription,
 					weather.main.temp,
@@ -180,7 +183,7 @@ class WeatherService {
 		const { currentWeatherData, forecastData } = await this.fetchWeatherData(this.LOCATION);
 
 		const currentWeather = await this.parseCurrentWeather(currentWeatherData);
-		const forecast = this.buildForecastArray(forecastData.list);
+		const forecast = this.buildForecastArray(forecastData.list, currentWeather);
 
 		await historyService.addCity(city);
 
