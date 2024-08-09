@@ -45,11 +45,12 @@ class WeatherService {
 
 	/**
 	 * Get Current Date
+	 * @param {number} dt_sec - Date in seconds
 	 * @return {string}
 	 * @description - Get the current date in the format of YYYY-MM-DD
 	 */
-	private getCurrentDate(): string {
-		const date = new Date();
+	private getCurrentDate(dt_sec: number): string {
+		const date = new Date(dt_sec * 1000);
 		const year = date.getFullYear();
 		const month = (date.getMonth() + 1).toString().padStart(2, '0');
 		const day = date.getDate().toString().padStart(2, '0');
@@ -130,7 +131,7 @@ class WeatherService {
 	private async parseCurrentWeather(currentWeatherData: any): Promise<Weather> {
 		return new Weather(
 			this.CITY,
-			this.getCurrentDate(),
+			this.getCurrentDate(currentWeatherData.dt),
 			currentWeatherData.weather[0].icon,
 			currentWeatherData.weather[0].description,
 			currentWeatherData.main.temp,
