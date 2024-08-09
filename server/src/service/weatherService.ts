@@ -41,7 +41,6 @@ class WeatherService {
 	private readonly baseURL: string = process.env.API_BASE_URL!;
 	private readonly apiKey: string = process.env.API_KEY!;
 	private CITY: string = '';
-	private LOCATION: Coordinates = { country: 'US', lat: 0, lon: 0, name: '', state: '' };
 
 	/**
 	 * Get Current Date
@@ -72,8 +71,7 @@ class WeatherService {
 	 * @return {Coordinates}
 	 */
 	private destructureLocationData(locationData: Coordinates): Coordinates {
-		this.LOCATION = { ...locationData };
-		return this.LOCATION;
+		return { ...locationData };
 	}
 
 	/**
@@ -98,15 +96,15 @@ class WeatherService {
 
 	/**
 	 * Fetch And Destructure Location Data
-	 * @return {Promise<void>}
+	 * @return {Promise<Coordinates>}
 	 */
-	private async fetchAndDestructureLocationData(): Promise<void> {
+	private async fetchAndDestructureLocationData(): Promise<Coordinates> {
 		const query = this.buildGeocodeQuery();
 		const response = await this.fetchLocationData(query);
 		const json = await response.json();
 		const data: Array<Coordinates> = await json;
 
-		this.destructureLocationData(data[0]);
+		return this.destructureLocationData(data[0]);
 	}
 
 	/**
@@ -179,9 +177,14 @@ class WeatherService {
 	 */
 	async getWeatherForCity(city: string): Promise<Array<Weather>> {
 		this.CITY = city;
-		this.fetchAndDestructureLocationData();
-		const { currentWeatherData, forecastData } = await this.fetchWeatherData(this.LOCATION);
 
+		const location = await this.fetchAndDestructureLocationData();
+
+		// If the location object is empty, return an array with a single Weather object
+		// This object will have a City not found as the city name
+		if (Object.keys(location).length === 0) return [new Weather('City not found', '', '', '', '', '', '')];
+
+		const { currentWeatherData, forecastData } = await this.fetchWeatherData(location);
 		const currentWeather = await this.parseCurrentWeather(currentWeatherData);
 		const forecast = this.buildForecastArray(forecastData.list, currentWeather);
 
