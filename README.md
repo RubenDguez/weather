@@ -65,7 +65,7 @@ The Weather Dashboard is a web application that allows travelers to view current
 
 ## Deployment
 
-The application is deployed on Render. You can view it live [here](https://weather-x3e7.onrender.com).
+The application is deployed on Render. You can view it live [here](https://weather-app-pro-v3mp.onrender.com/).
 
 ## License
 
