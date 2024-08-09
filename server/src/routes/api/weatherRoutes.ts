@@ -17,7 +17,7 @@ router.get('/history', async (_req, res) => {
 router.delete('/history/:id', async (req, res) => {
   const id = req.params.id;
   await HistoryService.removeCity(id);
-  res.status(300).send();
+  res.status(202).send();
 });
 
 export default router;

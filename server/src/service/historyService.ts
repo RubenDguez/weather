@@ -1,50 +1,79 @@
 import { readFile, writeFile } from 'fs/promises';
 import * as uuid from 'uuid';
 
+/** Class City */
 class City {
-  id: string;
-  name: string;
+	id: string;
+	name: string;
 
-  constructor(name: string) {
-    this.id = uuid.v4();
-    this.name = name;
-  }
+	/**
+	 * Constructor
+	 * @param {string} name
+	 */
+	constructor(name: string) {
+		this.id = uuid.v4();
+		this.name = name;
+	}
 }
 
+/** History Service */
 class HistoryService {
-  private readonly DB_URL = `${process.cwd()}/db/db.json`;
+	private readonly DB_URL = `${process.cwd()}/db/db.json`;
 
-  private async read(): Promise<Array<City>> {
-    const cities = await readFile(this.DB_URL, {encoding: 'utf-8'});
+	/**
+	 * Read
+	 * @return {Promise<Array<City>>}
+	 */
+	private async read(): Promise<Array<City>> {
+		const cities = await readFile(this.DB_URL, { encoding: 'utf-8' });
 
-    return JSON.parse(cities);
-  }
+		return JSON.parse(cities);
+	}
 
-  private async write(cities: City[]) {
-    await writeFile(this.DB_URL, JSON.stringify(cities, null, 4), {encoding: 'utf-8'});
-  }
+	/**
+	 * Write
+	 * @param {Array<City>} cities
+	 * @return {Promise<void>}
+	 */
+	private async write(cities: Array<City>): Promise<void> {
+		await writeFile(this.DB_URL, JSON.stringify(cities, null, 4), { encoding: 'utf-8' });
+	}
 
-  async getCities(): Promise<Array<City>> {
-    const cities: Array<City> = await this.read();
-    await this.write(cities);
+	/**
+	 * Get Cities
+	 * @return {Promise<Array<City>>}
+	 */
+	async getCities(): Promise<Array<City>> {
+		const cities: Array<City> = await this.read();
+		await this.write(cities);
 
-    return cities;
-  }
+		return cities;
+	}
 
-  async addCity(city: string) {
-    const cities = await this.getCities();
+	/**
+	 * Add City
+	 * @param {string} city
+	 * @return {Promise<void>}
+	 */
+	async addCity(city: string): Promise<void> {
+		const cities = await this.getCities();
 
-    if (cities.find((c) => (c.name === city))) return;
+		if (cities.find((c) => c.name === city)) return;
 
-    cities.push(new City(city));
-    await this.write(cities);
-  }
+		cities.push(new City(city));
+		await this.write(cities);
+	}
 
-  async removeCity(id: string) {
-    const cities = await this.getCities();
-    const filteredCities = cities.filter((c) => (c.id !== id));
-    await this.write(filteredCities);
-  }
+	/**
+	 * Remove City
+	 * @param {string} id
+	 * @return {Promise<void>}
+	 */
+	async removeCity(id: string): Promise<void> {
+		const cities = await this.getCities();
+		const filteredCities = cities.filter((c) => c.id !== id);
+		await this.write(filteredCities);
+	}
 }
 
 export default new HistoryService();
