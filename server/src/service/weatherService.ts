@@ -116,7 +116,6 @@ class WeatherService {
 	private async fetchWeatherData(coordinates: Coordinates): Promise<{ currentWeatherData: any; forecastData: any }> {
 		const currentWeatherResponse = await fetch(this.buildWeatherQuery(coordinates).currentWeatherQuery);
 		const forecastResponse = await fetch(this.buildWeatherQuery(coordinates).forecastWeatherQuery);
-
 		const currentWeatherData = await currentWeatherResponse.json();
 		const forecastData = await forecastResponse.json();
 
@@ -146,7 +145,7 @@ class WeatherService {
 	 * @return {Array<Weather>}
 	 */
 	private buildForecastArray(weatherData: Array<any>): Array<Weather> {
-		const forecast: Array<Weather> = [];
+		const forecast: Array<Weather> = new Array();
 
 		for (const weather of weatherData) {
 			if (forecast.find((f) => f.date === weather.dt_txt.split(' ')[0])) continue;
